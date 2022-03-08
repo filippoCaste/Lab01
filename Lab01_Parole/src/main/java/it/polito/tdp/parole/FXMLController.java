@@ -1,6 +1,7 @@
 package it.polito.tdp.parole;
 
 import it.polito.tdp.parole.model.Parole;
+import it.polito.tdp.parole.model.ParoleLL;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -38,8 +39,12 @@ public class FXMLController {
     @FXML
     private Button btnReset;
 
+    
+    
     @FXML
     void doInsert(ActionEvent event) {
+    	long startTime = System.nanoTime();
+    	
     	elenco.addParola(txtParola.getText());
     	String res = "";
     	for(String s : elenco.getElenco()) {
@@ -48,28 +53,36 @@ public class FXMLController {
     	txtResult.setText(res);
     	txtParola.clear();
     	
-    	txtExecutionTime.setText(""+System.nanoTime());
+    	txtExecutionTime.setText("Tempo di esecuzione (ns): " + this.calcoloExecutionTime(startTime));
     }
 
     @FXML
     void doReset(ActionEvent event) {
+    	long startTime = System.nanoTime();
+    	
     	txtResult.clear();
     	elenco.reset();
     	
-    	txtExecutionTime.setText(""+System.nanoTime());
+    	txtExecutionTime.setText("Tempo di esecuzione (ns): " + this.calcoloExecutionTime(startTime));
     }
     
-    // ------------------ESERCIZIO 2------------------
+    // ------------------ ESERCIZIO 2 ------------------
     
     @FXML
     void doCancellaParola(ActionEvent event) {
+    	long startTime = System.nanoTime();
+    	
     	String selWord = txtResult.getSelectedText();
     	boolean flag = elenco.removeParola(selWord);
     	
     	if(!flag)
     		txtResult.setText("\nNon è stato possibile rimuovere la parola selezionata. Riprovare!");
     	
-    	txtExecutionTime.setText(""+System.nanoTime());
+    	txtExecutionTime.setText("Tempo di esecuzione (ns): " + this.calcoloExecutionTime(startTime));
+    }
+    
+    public long calcoloExecutionTime(long startTime) {
+    	return System.nanoTime() - startTime;
     }
 
     @FXML
